@@ -1,4 +1,4 @@
-import PokemonsStore from './store';
+import MainStore from './store';
 import {Provider} from 'mobx-react';
 import ReactDOM from 'react-dom';
 import React from 'react';
@@ -7,7 +7,7 @@ import './index.css';
 
 
 ReactDOM.render(
-  <Provider PokemonsStore={PokemonsStore}>
+  <Provider MainStore={MainStore}>
     <App/>
   </Provider>,
   document.getElementById('root')

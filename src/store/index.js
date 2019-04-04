@@ -1,5 +1,5 @@
-import PokemonsStore from "../store/pokemons-store";
+import MainStore from "../store/pokemons-store";
 
 
-const store = new PokemonsStore()
+const store = new MainStore()
 export default store;

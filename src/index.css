@@ -52,6 +52,10 @@ body {
     background: #405769;
 }
 
+.search-by-name button:active {
+    background: #23313c;
+}
+
 /*----------------search by type-------------------*/
 
 .search-txt {
@@ -87,7 +91,8 @@ body {
 }
 
 .search-by-type .button.active {
-    opacity: 0.5;
+    opacity: 0.4;
+    border: 2px solid black;
 }
 
 .normal {
@@ -180,6 +185,7 @@ body {
 .pokemon {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     display: flex;
+    height: 108px;
 }
 
 .pokemon img {
@@ -188,7 +194,6 @@ body {
 }
 
 .pokemon h4 {
-    color: #848484;
     margin: unset;
 }
 
@@ -202,15 +207,15 @@ body {
     font-weight: bold;
     color: white;
     padding: 5px;
-    background: red;
     border-radius: 20px;
+    margin: 4px;
 }
 
 .pokemon .info {
-    padding: 2px 16px;
+    padding: 10px 16px;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
 }
 
 .flip-pokemon {
@@ -244,8 +249,7 @@ body {
 .flip-pokemon-back {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     transform: rotateY(180deg);
-    /*display: flex;*/
-    /*justify-content: space-around;*/
+    overflow: hidden;
 }
 
 /*--------------pokemon stats-----------------*/
@@ -254,28 +258,38 @@ body {
     margin: 5px;
 }
 
-.charts--vertical {
-    height: 78px;
-    width: 100%;
+.flip-pokemon-back ul {
+    list-style-type: none;
+    padding: 0 10px;
+    text-align: start;
+    margin: unset;
 }
 
-.charts--vertical .charts__chart {
-    text-align: -webkit-center;
+.flip-pokemon-back li {
+    color: white;
+    padding: 3px;
+    font-size: 10px;
+    text-align: center;
+    border-radius: 15px;
+    margin-bottom: 2px;
 }
 
-.charts--vertical .charts__percent {
-    color: black;
-    transform: unset;
+.flip-pokemon-back li.speed {
+    background: blue;
 }
 
-.charts--vertical .chart--xl .charts__percent {
-    left: 0;
-    top: 0;
+.flip-pokemon-back li.special-defense {
+    background: green;
 }
 
-.charts span {
-    text-transform: unset;
+.flip-pokemon-back li.special-attack {
+    background: red;
 }
+
+.flip-pokemon-back li.defense {
+    background: orange;
+}
+
 
 /*----------------pagination-----------------------*/
 
@@ -306,6 +320,39 @@ body {
 .paginate li.active {
     background: #4e7390;
     color: white;
+}
+
+/*---------loader----------*/
+.loader {
+    border-radius: 50%;
+    border: 16px solid blue;
+    border-right-color: green;
+    border-bottom-color: red;
+    border-left-color: pink;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+    position: fixed;
+    /* z-index: 999; */
+    /* height: 2em; */
+    /* width: 2em; */
+    overflow: visible;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 
