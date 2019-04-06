@@ -3,32 +3,54 @@ import {observable, action, computed} from "mobx";
 import api from '../../common/constants/api'
 
 export default class MainStore {
-  @observable isAppLoading = true;
-  @observable isFetchLoading = false;
-  @observable initPokemonData = {};
+  @observable isLoading = false;
+  @observable isAppLoaded = false;
+  @observable pokemonCounts = 0;
   @observable pokemonTypes = [];
   @observable pokemonFullList = [];
   @observable isSearchByName = false;
   @observable searchError = '';
+  @observable typeName = '';
   @observable isSearchByType = false;
   @observable showItemsCount = 20;
   @observable page = 1;
 
-  @action fetchInitPokemonData = (offset, limit) => {
-    const url = `${api}/pokemon?offset=${offset}&limit=${limit}`;
+  @action setPage = (page) => {
+    this.page = page;
+    if (this.isSearchByType) {
+      this.fetchPokemonWithType(this.typeName)
+    } else {
+      this.fetchInitPokemonData()
+    }
+  };
+
+  @action fetchInitPokemonData = () => {
+    this.isLoading = true;
+    this.isSearchByName = false;
+    this.isSearchByType = false;
+    const count = this.showItemsCount;
+    const page = this.page;
+    const offset = page * count - count;
+    const url = `${api}/pokemon?offset=${offset}&limit=${this.showItemsCount}`;
     const callback = (data) => {
-      this.initPokemonData = data;
+      this.pokemonCounts = data['count'];
+      this.pokemonFullList.length = 0;
       this.fetchEveryPokemonData(data['results']);
     };
     Http.get(url, callback)
   };
 
   @action fetchEveryPokemonData = (initPokemonData) => {
+    let newList = [];
     initPokemonData.forEach(result => {
       const url = result['url'];
       const callback = (data) => {
-        this.pokemonFullList.push(data);
-        this.pokemonFullList.length === this.showItemsCount && this.changeAppLoadingValue(false);
+        newList.push(data);
+        if (newList.length === initPokemonData.length) {
+          this.pokemonFullList = newList;
+          this.isLoading = false;
+          this.isAppLoaded = true;
+        }
       };
       Http.get(url, callback);
     });
@@ -43,27 +65,36 @@ export default class MainStore {
   @action fetchPokemonWithName = (searchWord) => {
     const url = `${api}/pokemon/${searchWord}`;
     this.searchError = '';
-    this.isFetchLoading = true;
+    this.isLoading = true;
+    this.page = 1;
     const callback = (data) => {
       this.pokemonFullList = [data];
-      this.isFetchLoading = false;
+      this.isLoading = false;
       this.isSearchByName = true;
       this.isSearchByType = false
     };
 
     const errorCallback = () => {
-      this.isFetchLoading = false;
+      this.isLoading = false;
       this.searchError = 'No Pokemon With This Name';
     };
     Http.get(url, callback, errorCallback);
   };
 
-  @action fetchPokemonWithType = (name) => {
-    const url = `${api}/type/${name}`;
+  @action fetchPokemonWithType = (type) => {
+    if(!type) {
+      this.page = 1;
+      this.fetchInitPokemonData();
+      return;
+    }
     this.isSearchByName = false;
+    this.typeName = type;
     this.searchError = '';
-    this.isFetchLoading = true;
+    this.isLoading = true;
+    this.page = this.isSearchByType ? this.page : 1;
+    const url = `${api}/type/${type}`;
     const callback = (data) => {
+      this.pokemonCounts = data['pokemon'].length;
       const count = this.showItemsCount;
       const page = this.page;
       const max = page * count;
@@ -80,22 +111,34 @@ export default class MainStore {
       const url = result['pokemon']['url'];
       const callback = (data) => {
         newList.push(data);
-        this.pokemonFullList = newList;
-        if (newList.length === this.showItemsCount) {
+        if (newList.length === pokemonData.length) {
+          this.pokemonFullList = newList;
           this.isSearchByType = true;
-          this.isFetchLoading = false;
+          this.isLoading = false;
         }
       };
       Http.get(url, callback);
     });
   };
 
-  @action changeAppLoadingValue = (flag) => {
-    this.isAppLoading = flag;
+  @action changeShowItemsCount = (count) => {
+    if (this.showItemsCount === count) return;
+    this.showItemsCount = count;
+    this.page = 1;
+    if (this.isSearchByType) {
+      this.fetchPokemonWithType(this.typeName)
+    } else {
+      this.fetchInitPokemonData()
+    }
   };
 
-  @computed get getInitPokemonData() {
-    return this.initPokemonData;
+  @action resetAll = () => {
+    this.page = 1;
+    this.fetchInitPokemonData();
+  };
+
+  @computed get getPokemonCounts() {
+    return this.pokemonCounts;
   };
 
   @computed get getPokemonFullList() {
@@ -106,19 +149,31 @@ export default class MainStore {
     return this.pokemonTypes.slice(0, -2);
   };
 
-  @computed get getAppLoadingValue() {
-    return this.isAppLoading
+  @computed get getLoadingValue() {
+    return this.isLoading
   };
 
-  @computed get getPageIndex() {
-    return this.page
+  @computed get getIsAppLoadedValue() {
+    return this.isAppLoaded
   };
 
   @computed get getSearchError() {
     return this.searchError
   };
 
-  @computed get getFetchLoading() {
-    return this.isFetchLoading
+  @computed get getShowItemsCount() {
+    return this.showItemsCount
   };
+
+  @computed get getPage() {
+    return this.page
+  };
+
+  @computed get getSearchByValue() {
+    return {
+      isSearchByName: this.isSearchByName,
+      isSearchByType: this.isSearchByType
+    }
+  };
+
 };

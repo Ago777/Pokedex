@@ -4,24 +4,13 @@ import Loader from "../../../../common/loader";
 
 class SearchByType extends Component {
   static propTypes = {
-    fetchPokemonWithType: PropTypes.func.isRequired,
-    pokemonTypes: PropTypes.array.isRequired
-  };
-
-  state = {
-    activeTypesList: []
-  };
-
-  selectTypeHandler = (name) => {
-    const {state: {activeTypesList}, props: {fetchPokemonWithType}} = this;
-    const activeTypes = [...activeTypesList];
-
-    activeTypes.includes(name) ? activeTypes.splice(activeTypes.indexOf(name), 1) : activeTypes.push(name);
-    this.setState({activeTypesList: activeTypes}, () => fetchPokemonWithType(name))
+    selectTypeHandler: PropTypes.func.isRequired,
+    pokemonTypes: PropTypes.array.isRequired,
+    activeType: PropTypes.string.isRequired
   };
 
   render() {
-    const {props: {pokemonTypes}, state: {activeTypesList}} = this;
+    const {props: {pokemonTypes, activeType, selectTypeHandler}} = this;
     if (!pokemonTypes.length) {
       return (
         <div className='search-by-type'>
@@ -32,17 +21,16 @@ class SearchByType extends Component {
 
     return (
       <div className='search-by-type'>
-        <div className='search-txt'><h4>Search By Type</h4></div>
         <div className='type-buttons'>
           {
-            pokemonTypes.map((type, i) => {
+            pokemonTypes.map(type => {
               const name = type['name'];
 
               return (
                 <button
                   key={name}
-                  className={`button ${name} ${activeTypesList.includes(name) ? ' active' : ''}`}
-                  onClick={() => this.selectTypeHandler(name)}
+                  className={`button ${name} ${activeType === name ? ' active' : ''}`}
+                  onClick={() => selectTypeHandler(name)}
                 >
                   {type['name']}
                 </button>

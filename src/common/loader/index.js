@@ -1,9 +1,10 @@
 import React from 'react';
 
-const Loader = () => {
+const AppLoader = (props) => {
+
   return (
-    <div className='loader'/>
+    <div className={`${props.isAppLoader ? 'appLoader' : 'loader'}`}/>
   );
 };
 
-export default Loader;
+export default AppLoader;

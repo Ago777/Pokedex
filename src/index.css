@@ -58,8 +58,8 @@ body {
 
 /*----------------search by type-------------------*/
 
-.search-txt {
-    text-align: center;
+.search-by-type {
+    margin: 15px 0;
 }
 
 .search-by-type .button {
@@ -91,8 +91,8 @@ body {
 }
 
 .search-by-type .button.active {
-    opacity: 0.4;
-    border: 2px solid black;
+    box-shadow: 0 0 11px 1px rgba(0,0,0,0.68);
+    color: black
 }
 
 .normal {
@@ -166,9 +166,60 @@ body {
 .fairy {
     background-color: #e9e;
 }
-
-
 /*---------------pokemons----------------*/
+
+.content {
+    min-height: 300px;
+    position: relative;
+}
+.see-all {
+    text-align: center;
+}
+
+.see-all:hover {
+    opacity: 0.5;
+}
+
+.show-items {
+    text-align: center;
+}
+
+.count {
+    margin-left: 10px;
+    text-decoration: underline;
+    cursor: pointer;
+    color: black;
+    background-color: unset;
+    font-size: 15px;
+    border: none;
+    outline: none;
+}
+
+.count:hover {
+    opacity: 0.5
+}
+
+.count.active {
+    color: red;
+    cursor: unset;
+}
+
+.count.active:hover {
+    color: red;
+    cursor: unset;
+    opacity: unset;
+}
+
+.see-all button {
+    border: none;
+    background: none;
+    font-weight: 700;
+    color: #676767;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 15px;
+    outline: none;
+}
 
 .pokemons-header {
     text-align: center;
@@ -189,7 +240,6 @@ body {
 }
 
 .pokemon img {
-    width: 100%;
     height: 100%;
 }
 
@@ -203,7 +253,7 @@ body {
 
 .pokemon .type {
     width: 80px;
-    font-size: 12px;
+    font-size: 8px;
     font-weight: bold;
     color: white;
     padding: 5px;
@@ -216,6 +266,11 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+.info h4 {
+    font-size: 12px;
+    color: #6f6f6f
 }
 
 .flip-pokemon {
@@ -323,7 +378,7 @@ body {
 }
 
 /*---------loader----------*/
-.loader {
+.appLoader {
     border-radius: 50%;
     border: 16px solid blue;
     border-right-color: green;
@@ -345,6 +400,30 @@ body {
     right: 0;
 }
 
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 10%;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+    position: absolute;
+    top: 30%;
+    left: 45%;
+}
+
+/* Safari */
 @-webkit-keyframes spin {
     0% { -webkit-transform: rotate(0deg); }
     100% { -webkit-transform: rotate(360deg); }

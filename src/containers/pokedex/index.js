@@ -6,18 +6,18 @@ import Pokemons from "../pokemons";
 
 class Pokedex extends Component {
   static propTypes = {
-    pokemonList: PropTypes.array.isRequired,
-    initPokemonData: PropTypes.object.isRequired
+    pokemonCounts: PropTypes.number.isRequired,
+    pokemonList: PropTypes.array.isRequired
   };
 
   render() {
-    const {initPokemonData, pokemonList} = this.props;
+    const {pokemonCounts, pokemonList} = this.props;
 
     return (
       <div>
         <SearchBox/>
         <Pokemons pokemonList={pokemonList}/>
-        <Pagination initPokemonData={initPokemonData}/>
+        <Pagination pokemonCounts={pokemonCounts}/>
       </div>
     );
   };

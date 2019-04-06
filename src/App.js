@@ -1,7 +1,7 @@
 import {inject, observer} from 'mobx-react';
 import Pokedex from "./containers/pokedex";
+import AppLoader from "./common/loader";
 import React, {Component} from 'react';
-import Loader from "./common/loader";
 import PropTypes from 'prop-types';
 
 @inject('MainStore')
@@ -10,28 +10,28 @@ class App extends Component {
   static propTypes = {
     MainStore: PropTypes.shape({
       fetchInitPokemonData: PropTypes.func.isRequired,
-      getInitPokemonData: PropTypes.object.isRequired,
+      getPokemonCounts: PropTypes.number.isRequired,
       getPokemonFullList: PropTypes.array.isRequired,
-      getAppLoadingValue: PropTypes.bool.isRequired,
+      getIsAppLoadedValue: PropTypes.bool.isRequired,
       fetchPokemonTypes: PropTypes.func.isRequired
     }),
   };
 
   componentDidMount() {
     const {MainStore: {fetchInitPokemonData, fetchPokemonTypes}} = this.props;
-    fetchInitPokemonData(0, 20);
+    fetchInitPokemonData();
     fetchPokemonTypes();
   };
 
   render() {
-    const {MainStore: {getAppLoadingValue, getPokemonFullList, getInitPokemonData}} = this.props;
+    const {MainStore: {getIsAppLoadedValue, getPokemonFullList, getPokemonCounts}} = this.props;
 
     return (
       <div className="App">
         {
-          getAppLoadingValue
-            ? <Loader/>
-            : <Pokedex pokemonList={getPokemonFullList} initPokemonData={getInitPokemonData}/>
+          !getIsAppLoadedValue
+            ? <AppLoader isAppLoader={true}/>
+            : <Pokedex pokemonList={getPokemonFullList} pokemonCounts={getPokemonCounts}/>
         }
       </div>
     );

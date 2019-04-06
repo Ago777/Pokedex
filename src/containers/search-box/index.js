@@ -9,9 +9,12 @@ import PropTypes from 'prop-types';
 class SearchBox extends Component {
   static propTypes = {
     MainStore: PropTypes.shape({
+      fetchPokemonWithType: PropTypes.func.isRequired,
       fetchPokemonWithName: PropTypes.func.isRequired,
+      getSearchByValue: PropTypes.object.isRequired,
       fetchPokemonTypes: PropTypes.func.isRequired,
       getPokemonTypes: PropTypes.array.isRequired,
+      resetAll: PropTypes.func.isRequired
     }),
   };
 
@@ -22,7 +25,8 @@ class SearchBox extends Component {
 
 
   state = {
-    searchWord: ''
+    searchWord: '',
+    activeType: ''
   };
 
   handleChangeInput = (e) => {
@@ -32,16 +36,56 @@ class SearchBox extends Component {
 
   handleSearch = () => {
     const {state: {searchWord}, props: {MainStore: {fetchPokemonWithName}}} = this;
-    searchWord.trim().length && fetchPokemonWithName(searchWord.toLowerCase());
+    searchWord.trim().length && this.setState({activeTypesList: []}, () => fetchPokemonWithName(searchWord.toLowerCase()));
+  };
+
+  selectTypeHandler = (name) => {
+    const {state: {activeType}, props: {MainStore: {fetchPokemonWithType}}} = this;
+    const newType = activeType === name ? '' : name;
+    this.setState({activeType: newType, searchWord: ''}, () => fetchPokemonWithType(newType))
+  };
+
+  ResetAllFilter = () => {
+    const {props: {MainStore: {resetAll}}} = this;
+    this.setState({searchWord: '', activeType: ''}, () => resetAll());
   };
 
   render() {
-    const {MainStore: {getPokemonTypes, fetchPokemonWithType}} = this.props;
+    const {
+      props: {
+        MainStore: {
+          getPokemonTypes,
+          fetchPokemonWithType,
+          getSearchByValue
+        }
+      },
+      state: {
+        activeType,
+        searchWord
+      }
+    } = this;
+    const {isSearchByName, isSearchByType} = getSearchByValue;
+    const isShowSeeAllButton = isSearchByName || isSearchByType;
 
     return (
       <div>
-        <SearchByName handleChangeInput={this.handleChangeInput} handleSearch={this.handleSearch}/>
-        <SearchByType pokemonTypes={getPokemonTypes} fetchPokemonWithType={fetchPokemonWithType}/>
+        <SearchByName
+          searchWord={searchWord}
+          handleChangeInput={this.handleChangeInput}
+          handleSearch={this.handleSearch}
+        />
+        <SearchByType
+          selectTypeHandler={this.selectTypeHandler}
+          fetchPokemonWithType={fetchPokemonWithType}
+          pokemonTypes={getPokemonTypes}
+          activeType={activeType}
+        />
+        {
+          isShowSeeAllButton &&
+          <div className='see-all'>
+            <button onClick={this.ResetAllFilter}>See All</button>
+          </div>
+        }
       </div>
     );
   };
