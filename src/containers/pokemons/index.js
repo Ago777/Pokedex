@@ -21,11 +21,11 @@ class Pokemons extends Component {
     const {
       pokemonList,
       MainStore: {
-        getSearchError,
-        getLoadingValue,
-        getShowItemsCount,
         changeShowItemsCount,
-        getSearchByValue
+        getShowItemsCount,
+        getSearchByValue,
+        getLoadingValue,
+        getSearchError
       }
     } = this.props;
     if (getLoadingValue) {

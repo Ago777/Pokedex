@@ -3,7 +3,7 @@ import React from 'react';
 const AppLoader = (props) => {
 
   return (
-    <div className={`${props.isAppLoader ? 'appLoader' : 'loader'}`}/>
+    <div className={`${props['isAppLoader'] ? 'appLoader' : 'loader'}`}/>
   );
 };
 

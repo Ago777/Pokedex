@@ -196,16 +196,16 @@ body {
 }
 
 .count:hover {
-    opacity: 0.5
+    color: #4e7390;
 }
 
 .count.active {
-    color: red;
+    color: #4e7390;
     cursor: unset;
 }
 
 .count.active:hover {
-    color: red;
+    color: #4e7390;
     cursor: unset;
     opacity: unset;
 }
@@ -214,7 +214,7 @@ body {
     border: none;
     background: none;
     font-weight: 700;
-    color: #676767;
+    color: #4e7390;
     text-decoration: underline;
     cursor: pointer;
     font-size: 15px;

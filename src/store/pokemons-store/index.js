@@ -82,7 +82,7 @@ export default class MainStore {
   };
 
   @action fetchPokemonWithType = (type) => {
-    if(!type) {
+    if (!type) {
       this.page = 1;
       this.fetchInitPokemonData();
       return;

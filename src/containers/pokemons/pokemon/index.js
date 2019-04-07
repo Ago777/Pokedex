@@ -9,7 +9,7 @@ class Pokemon extends Component {
   render() {
     const {pokemon} = this.props;
     const pokemonImg = pokemon['sprites']['front_default'];
-    const noImg = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png'
+    const noImg = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png';
 
     return (
       <>
@@ -17,7 +17,7 @@ class Pokemon extends Component {
           <div className='flip-pokemon-inner'>
             <div className='flip-pokemon-front'>
               <div className="pokemon">
-                <img src={pokemonImg? pokemonImg : noImg} alt='Avatar'/>
+                <img src={pokemonImg ? pokemonImg : noImg} alt='Avatar'/>
                 <div className="info">
                   <h4>{pokemon['name'].toUpperCase()}</h4>
                   <div>

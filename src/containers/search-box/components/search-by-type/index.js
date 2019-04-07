@@ -1,6 +1,6 @@
+import Loader from "../../../../common/loader";
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Loader from "../../../../common/loader";
 
 class SearchByType extends Component {
   static propTypes = {

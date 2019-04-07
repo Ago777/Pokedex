@@ -13,4 +13,4 @@ const Http = {
   }
 };
 
-export default Http
+export default Http;
